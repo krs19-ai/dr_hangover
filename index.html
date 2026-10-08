@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dr. Hangover — home remedies for last night</title>
+  <meta name="description" content="Dr. Hangover suggests traditional home remedies that may help after a night out. Not medical advice.">
+  <meta name="theme-color" content="#131518">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">Dr.&nbsp;Hangover</h1>
+    <p class="tagline">Last night was a great idea. This is the recovery plan.</p>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ SCREEN 1: INPUT ============ -->
+    <section id="screen-input" class="screen" aria-labelledby="input-title" tabindex="-1">
+      <h2 id="input-title" class="screen-title">Okay, what happened?</h2>
+      <p class="screen-intro">Answer a few questions. Nothing is stored or sent anywhere &mdash; this all happens in your browser.</p>
+
+      <form id="drink-form" novalidate>
+
+        <!-- 1. What did you drink -->
+        <div class="field">
+          <label class="field-label" for="drink">What did you drink?</label>
+          <select id="drink" name="drink" class="control">
+            <option value="">Choose a drink&hellip;</option>
+            <option value="beer">Beer</option>
+            <option value="wine">Wine</option>
+            <option value="whisky">Whisky</option>
+            <option value="rum">Rum</option>
+            <option value="vodka">Vodka</option>
+            <option value="other">Other</option>
+          </select>
+          <p class="field-error" id="drink-error" hidden></p>
+        </div>
+
+        <!-- 2. Did you mix drinks? -->
+        <fieldset class="field">
+          <legend class="field-label">Did you mix drinks?</legend>
+          <div class="chip-row">
+            <input type="radio" class="chip-input" id="mixed-yes" name="mixed" value="yes">
+            <label class="chip" for="mixed-yes">Yes</label>
+            <input type="radio" class="chip-input" id="mixed-no" name="mixed" value="no">
+            <label class="chip" for="mixed-no">No</label>
+          </div>
+          <p class="field-error" id="mixed-error" hidden></p>
+        </fieldset>
+
+        <!-- 2b. Follow-up: only when "yes" is picked -->
+        <div class="field" id="mixed-followup" hidden>
+          <fieldset>
+            <legend class="field-label">What else did you drink?</legend>
+            <p class="field-hint">Pick one or more, besides the first drink.</p>
+            <div class="chip-row">
+              <input type="checkbox" class="chip-input" id="extra-beer" name="extra" value="beer">
+              <label class="chip" for="extra-beer">Beer</label>
+              <input type="checkbox" class="chip-input" id="extra-wine" name="extra" value="wine">
+              <label class="chip" for="extra-wine">Wine</label>
+              <input type="checkbox" class="chip-input" id="extra-whisky" name="extra" value="whisky">
+              <label class="chip" for="extra-whisky">Whisky</label>
+              <input type="checkbox" class="chip-input" id="extra-rum" name="extra" value="rum">
+              <label class="chip" for="extra-rum">Rum</label>
+              <input type="checkbox" class="chip-input" id="extra-vodka" name="extra" value="vodka">
+              <label class="chip" for="extra-vodka">Vodka</label>
+              <input type="checkbox" class="chip-input" id="extra-other" name="extra" value="other">
+              <label class="chip" for="extra-other">Other</label>
+            </div>
+            <p class="field-error" id="extra-error" hidden></p>
+          </fieldset>
+        </div>
+
+        <!-- 3. How much -->
+        <div class="field">
+          <label class="field-label" for="amount">How much? (total pegs, glasses or pints)</label>
+          <input type="number" class="control" id="amount" name="amount"
+                 inputmode="numeric" min="1" max="30" step="1" placeholder="e.g. 4">
+          <p class="field-hint">Roughly how many of whatever you were drinking.</p>
+          <p class="field-error" id="amount-error" hidden></p>
+        </div>
+
+        <!-- 4. Water alongside -->
+        <fieldset class="field">
+          <legend class="field-label">How much water did you drink alongside it?</legend>
+          <div class="chip-row">
+            <input type="radio" class="chip-input" id="water-none" name="water" value="none">
+            <label class="chip" for="water-none">None</label>
+            <input type="radio" class="chip-input" id="water-little" name="water" value="little">
+            <label class="chip" for="water-little">A little</label>
+            <input type="radio" class="chip-input" id="water-good" name="water" value="good">
+            <label class="chip" for="water-good">A good amount</label>
+          </div>
+          <p class="field-error" id="water-error" hidden></p>
+        </fieldset>
+
+        <!-- 5. Body weight -->
+        <div class="field">
+          <label class="field-label" for="weight">Body weight (kg)</label>
+          <input type="number" class="control" id="weight" name="weight"
+                 inputmode="decimal" min="30" max="200" step="0.1" placeholder="e.g. 68">
+          <p class="field-error" id="weight-error" hidden></p>
+        </div>
+
+        <!-- 6. Hours since drinking stopped -->
+        <div class="field">
+          <label class="field-label" for="hours">How many hours ago did you stop drinking?</label>
+          <input type="number" class="control" id="hours" name="hours"
+                 inputmode="decimal" min="0" max="72" step="0.5" placeholder="e.g. 6">
+          <p class="field-error" id="hours-error" hidden></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn">Cook me up a remedy</button>
+      </form>
+    </section>
+
+    <!-- ============ SCREEN 2: LOADING ============ -->
+    <section id="screen-loading" class="screen screen-centered" aria-labelledby="loading-title" tabindex="-1" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <h2 id="loading-title" class="screen-title">Cooking something up for you&hellip;</h2>
+      <p class="loading-text" id="loading-message" role="status">Consulting the ancient hangover texts&hellip;</p>
+    </section>
+
+    <!-- ============ SCREEN 3: RESULTS ============ -->
+    <section id="screen-results" class="screen" aria-labelledby="results-title" tabindex="-1" hidden>
+      <h2 id="results-title" class="screen-title">Here's your recovery plan</h2>
+      <div id="results-content">
+        <p class="placeholder-note">Your remedies will appear here.</p>
+      </div>
+      <button type="button" class="btn btn-secondary" id="start-over">Start over</button>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Dr. Hangover &mdash; gentle advice for rough mornings.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

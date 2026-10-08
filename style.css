@@ -1,0 +1,265 @@
+/* =========================================================
+   Dr. Hangover — dark theme, mobile first
+   ========================================================= */
+
+:root {
+  /* Surfaces */
+  --bg:            #131518;  /* near-black charcoal */
+  --surface:       #1b1e23;
+  --surface-raised:#23272e;
+  --border:        #333941;
+
+  /* Text */
+  --text:          #e9e7e2;  /* soft off-white, never pure white */
+  --text-muted:    #a9aca6;
+
+  /* Accent — muted green */
+  --accent:        #a6c77e;
+  --accent-strong: #b9d68f;
+  --accent-ink:    #14180f;  /* text on accent */
+  --danger:        #e2957f;  /* muted coral for errors */
+
+  /* Metrics */
+  --radius:        14px;
+  --tap:           48px;     /* min tap target */
+  --gap:           1.25rem;
+  --maxw:          640px;
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.0625rem;   /* 17px */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Required by the acceptance checks */
+[hidden] { display: none !important; }
+
+img, svg { max-width: 100%; }
+
+/* ---------- Header / footer ---------- */
+.app-header {
+  padding: 2rem 1.25rem 0.5rem;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.app-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.tagline {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 1.0625rem;
+}
+
+.app-footer {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 3rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+/* ---------- Screens ---------- */
+#main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2rem;
+}
+
+.screen { outline: none; }
+
+.screen-centered {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.screen-title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.45rem, 6vw, 1.9rem);
+  line-height: 1.25;
+}
+
+.screen-intro {
+  margin: 0 0 1.75rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Form ---------- */
+.field {
+  margin: 0 0 var(--gap);
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.field-label,
+legend.field-label {
+  display: block;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.field-hint {
+  margin: 0.4rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+.control {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0.7rem 0.85rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font: inherit;
+  font-size: 1.0625rem;
+}
+
+.control::placeholder { color: #7d8189; }
+
+select.control {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%),
+                    linear-gradient(135deg, var(--accent) 50%, transparent 50%);
+  background-position: right 1.15rem center, right 0.95rem center;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.5rem;
+}
+
+/* ---------- Chips (radio / checkbox) ---------- */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.chip-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  padding: 0.5rem 1.05rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+
+.chip:hover { background: var(--surface-raised); }
+
+.chip-input:checked + .chip {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.chip-input:focus-visible + .chip {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+/* ---------- Errors ---------- */
+.field-error {
+  margin: 0.5rem 0 0;
+  color: var(--danger);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.field.has-error .control { border-color: var(--danger); }
+.field.has-error .chip { border-color: var(--danger); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover { background: var(--accent-strong); }
+
+.btn-secondary {
+  margin-top: 2rem;
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover { background: var(--surface); }
+
+/* ---------- Loading ---------- */
+.spinner {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 1.5rem;
+  border: 4px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text { color: var(--text-muted); }
+
+/* ---------- Results ---------- */
+.placeholder-note { color: var(--text-muted); }
+
+/* ---------- Focus visibility ---------- */
+:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.control:focus-visible { outline-offset: 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
