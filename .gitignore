@@ -1,0 +1,18 @@
+# OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs and local scratch
+*.log
+npm-debug.log*
+
+# Dependencies / build (not used, but just in case)
+node_modules/
+dist/
