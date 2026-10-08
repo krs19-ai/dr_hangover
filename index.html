@@ -9,16 +9,17 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="app-header">
     <h1 class="app-title">Dr.&nbsp;Hangover</h1>
     <p class="tagline">Last night was a great idea. This is the recovery plan.</p>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
 
     <!-- ============ SCREEN 1: INPUT ============ -->
     <section id="screen-input" class="screen" aria-labelledby="input-title" tabindex="-1">
-      <h2 id="input-title" class="screen-title">Okay, what happened?</h2>
+      <h2 id="input-title" class="screen-title" tabindex="-1">Okay, what happened?</h2>
       <p class="screen-intro">Answer a few questions. Nothing is stored or sent anywhere &mdash; this all happens in your browser.</p>
 
       <form id="drink-form" novalidate>
@@ -26,7 +27,7 @@
         <!-- 1. What did you drink -->
         <div class="field">
           <label class="field-label" for="drink">What did you drink?</label>
-          <select id="drink" name="drink" class="control">
+          <select id="drink" name="drink" class="control" aria-describedby="drink-error">
             <option value="">Choose a drink&hellip;</option>
             <option value="beer">Beer</option>
             <option value="wine">Wine</option>
@@ -35,7 +36,7 @@
             <option value="vodka">Vodka</option>
             <option value="other">Other</option>
           </select>
-          <p class="field-error" id="drink-error" hidden></p>
+          <p class="field-error" id="drink-error" hidden role="alert"></p>
         </div>
 
         <!-- 2. Did you mix drinks? -->
@@ -47,7 +48,7 @@
             <input type="radio" class="chip-input" id="mixed-no" name="mixed" value="no">
             <label class="chip" for="mixed-no">No</label>
           </div>
-          <p class="field-error" id="mixed-error" hidden></p>
+          <p class="field-error" id="mixed-error" hidden role="alert"></p>
         </fieldset>
 
         <!-- 2b. Follow-up: only when "yes" is picked -->
@@ -69,7 +70,7 @@
               <input type="checkbox" class="chip-input" id="extra-other" name="extra" value="other">
               <label class="chip" for="extra-other">Other</label>
             </div>
-            <p class="field-error" id="extra-error" hidden></p>
+            <p class="field-error" id="extra-error" hidden role="alert"></p>
           </fieldset>
         </div>
 
@@ -77,9 +78,10 @@
         <div class="field">
           <label class="field-label" for="amount">How much? (total pegs, glasses or pints)</label>
           <input type="number" class="control" id="amount" name="amount"
-                 inputmode="numeric" min="1" max="30" step="1" placeholder="e.g. 4">
-          <p class="field-hint">Roughly how many of whatever you were drinking.</p>
-          <p class="field-error" id="amount-error" hidden></p>
+                 inputmode="numeric" min="1" max="30" step="1" placeholder="e.g. 4"
+                 aria-describedby="amount-hint amount-error">
+          <p class="field-hint" id="amount-hint">Roughly how many of whatever you were drinking.</p>
+          <p class="field-error" id="amount-error" hidden role="alert"></p>
         </div>
 
         <!-- 4. Water alongside -->
@@ -93,23 +95,25 @@
             <input type="radio" class="chip-input" id="water-good" name="water" value="good">
             <label class="chip" for="water-good">A good amount</label>
           </div>
-          <p class="field-error" id="water-error" hidden></p>
+          <p class="field-error" id="water-error" hidden role="alert"></p>
         </fieldset>
 
         <!-- 5. Body weight -->
         <div class="field">
           <label class="field-label" for="weight">Body weight (kg)</label>
           <input type="number" class="control" id="weight" name="weight"
-                 inputmode="decimal" min="30" max="200" step="0.1" placeholder="e.g. 68">
-          <p class="field-error" id="weight-error" hidden></p>
+                 inputmode="decimal" min="30" max="200" step="0.1" placeholder="e.g. 68"
+                 aria-describedby="weight-error">
+          <p class="field-error" id="weight-error" hidden role="alert"></p>
         </div>
 
         <!-- 6. Hours since drinking stopped -->
         <div class="field">
           <label class="field-label" for="hours">How many hours ago did you stop drinking?</label>
           <input type="number" class="control" id="hours" name="hours"
-                 inputmode="decimal" min="0" max="72" step="0.5" placeholder="e.g. 6">
-          <p class="field-error" id="hours-error" hidden></p>
+                 inputmode="decimal" min="0" max="72" step="0.5" placeholder="e.g. 6"
+                 aria-describedby="hours-error">
+          <p class="field-error" id="hours-error" hidden role="alert"></p>
         </div>
 
         <button type="submit" class="btn btn-primary" id="submit-btn">Cook me up a remedy</button>
@@ -119,13 +123,13 @@
     <!-- ============ SCREEN 2: LOADING ============ -->
     <section id="screen-loading" class="screen screen-centered" aria-labelledby="loading-title" tabindex="-1" hidden>
       <div class="spinner" aria-hidden="true"></div>
-      <h2 id="loading-title" class="screen-title">Cooking something up for you&hellip;</h2>
+      <h2 id="loading-title" class="screen-title" tabindex="-1">Cooking something up for you&hellip;</h2>
       <p class="loading-text" id="loading-message" role="status">Consulting the ancient hangover texts&hellip;</p>
     </section>
 
     <!-- ============ SCREEN 3: RESULTS ============ -->
     <section id="screen-results" class="screen" aria-labelledby="results-title" tabindex="-1" hidden>
-      <h2 id="results-title" class="screen-title">Here's your recovery plan</h2>
+      <h2 id="results-title" class="screen-title" tabindex="-1">Here's your recovery plan</h2>
       <div id="results-content"></div>
 
       <!-- Ad placeholder: paste your ad banner markup here later. No ad code is included yet. -->

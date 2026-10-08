@@ -35,6 +35,10 @@
    * The one and only screen switcher: hide every section,
    * then show exactly the requested one. Never two at once —
    * not on load, not anywhere in the flow.
+   *
+   * Accessibility: each change scrolls back to the top and
+   * hands keyboard/screen-reader focus to that screen's
+   * heading, so nobody is left mid-page or mid-form.
    */
   function showScreen(name) {
     var target = "screen-" + name;
@@ -43,9 +47,21 @@
       if (el) el.hidden = (SCREEN_IDS[i] !== target);
     }
     var shown = document.getElementById(target);
-    if (shown) {
-      if (typeof shown.scrollIntoView === "function") shown.scrollIntoView({ block: "start" });
-      shown.focus({ preventScroll: true });
+    if (shown) focusScreen(shown);
+  }
+
+  /* Scroll to the very top, then focus the screen's heading. */
+  function focusScreen(screenEl) {
+    var heading = screenEl.querySelector("h1, h2, h3");
+    var target = heading || screenEl;
+    if (target !== screenEl && !target.hasAttribute("tabindex")) {
+      target.setAttribute("tabindex", "-1");
+    }
+    if (typeof window.scrollTo === "function") window.scrollTo(0, 0);
+    try {
+      target.focus({ preventScroll: true });
+    } catch (err) {
+      target.focus();   /* older browsers: no options object */
     }
   }
 
@@ -70,8 +86,8 @@
     showScreen("loading");
     if (loadingTimer) window.clearTimeout(loadingTimer);
     loadingTimer = window.setTimeout(function () {
-      showScreen("results");
       renderResults();
+      showScreen("results");
     }, LOADING_MS);
   }
 
@@ -433,6 +449,12 @@
      ========================================================= */
 
   function init() {
+    /* Never restore an old scroll position: every screen
+       change starts at the top of the page. */
+    if (window.history && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
     var form = document.getElementById("drink-form");
     if (!form) return;
 

@@ -46,6 +46,26 @@ body {
 
 img, svg { max-width: 100%; }
 
+/* ---------- Skip link (keyboard users) ---------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 20;
+  padding: 0.75rem 1.1rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 0 0 var(--radius) 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 0;
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
 /* ---------- Header / footer ---------- */
 .app-header {
   padding: 2rem 1.25rem 0.5rem;
@@ -135,7 +155,7 @@ legend.field-label {
   font-size: 1.0625rem;
 }
 
-.control::placeholder { color: #7d8189; }
+.control::placeholder { color: #8f939b; }
 
 select.control {
   appearance: none;
