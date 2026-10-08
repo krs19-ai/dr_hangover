@@ -311,20 +311,109 @@
   }
 
   /* =========================================================
-     RESULTS (real content arrives in Stage 3)
+     RESULTS RENDERING
      ========================================================= */
 
   var lastResult = null;
 
+  /* Escape anything that comes from the data files. */
+  function esc(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function bullets(items, tag) {
+    var html = "<" + tag + ">";
+    for (var i = 0; i < items.length; i++) html += "<li>" + esc(items[i]) + "</li>";
+    return html + "</" + tag + ">";
+  }
+
+  function recipeCard(r) {
+    var html = '<article class="recipe-card">';
+    html += '<h4 class="recipe-name">' + esc(r.name) + "</h4>";
+    html += '<p class="recipe-meta">Prep: ' + esc(r.prepTime) + "</p>";
+    if (r.ingredients && r.ingredients.length) {
+      html += '<p class="recipe-sub">You will need</p>' + bullets(r.ingredients, "ul");
+    }
+    if (r.steps && r.steps.length) {
+      html += '<p class="recipe-sub">Method</p>' + bullets(r.steps, "ol");
+    }
+    return html + "</article>";
+  }
+
+  function block(label, inner, extraClass) {
+    return '<section class="result-block' + (extraClass ? " " + extraClass : "") + '">' +
+      "<h3>" + esc(label) + "</h3>" + inner + "</section>";
+  }
+
+  /* Build the whole results screen for one tier. */
+  function renderTier(box, tier) {
+    var app = window.DrHangover || {};
+    var content = (app.TIER_CONTENT && app.TIER_CONTENT[tier]) || app.TIER_CONTENT.moderate;
+    var recipes = app.RECIPES || [];
+
+    var fulls = [];
+    var quicks = [];
+    for (var i = 0; i < recipes.length; i++) {
+      var r = recipes[i];
+      if (r.tier !== tier) continue;
+      if (r.type === "full") fulls.push(r);
+      else if (r.type === "quick") quicks.push(r);
+    }
+
+    var html = "";
+
+    html += '<p class="results-headline">' + esc(content.headline) + "</p>";
+    html += '<p class="results-intro">' + esc(content.intro) + "</p>";
+
+    if (quicks.length) {
+      html += block(content.quickLabel, quicks.map(recipeCard).join(""));
+    }
+
+    if (fulls.length) {
+      html += block(content.fullLabel, fulls.map(recipeCard).join(""));
+    }
+
+    html += block(content.sipLabel,
+      '<p class="tip-line">' + esc(content.hydrationTip) + "</p>");
+
+    html += block(content.electrolyteLabel,
+      bullets(content.electrolytes, "ul"));
+
+    html += block(content.caffeineLabel,
+      '<p class="tip-line">' + esc(content.caffeine) + "</p>");
+
+    /* Required disclaimer */
+    html += '<p class="disclaimer">Not medical advice. Dr. Hangover offers general home-remedy ideas only.</p>';
+
+    /* Required severe-symptom warning */
+    html += '<aside class="warning" role="note" aria-labelledby="warning-title">' +
+      '<h3 id="warning-title">Get medical help immediately</h3>' +
+      "<p>Home remedies are for rough mornings, not emergencies. Seek help straight away if there is:</p>" +
+      bullets([
+        "Repeated vomiting",
+        "Confusion or trouble staying oriented",
+        "Seizures",
+        "Trouble breathing",
+        "Extreme drowsiness, or being unable to wake the person up",
+        "Bluish skin or lips",
+        "Chest pain",
+        "A very large amount of alcohol in one go"
+      ], "ul") +
+      "<p>When in doubt, do not wait it out \u2014 call your local emergency number.</p>" +
+      "</aside>";
+
+    box.innerHTML = html;
+  }
+
   function renderResults() {
     var box = document.getElementById("results-content");
     if (!box) return;
-
-    if (window.DrHangover && typeof window.DrHangover.renderTier === "function") {
-      window.DrHangover.renderTier(box, lastResult ? lastResult.tier : "moderate");
-      return;
-    }
-    box.innerHTML = '<p class="placeholder-note">Your remedies will appear here.</p>';
+    var tier = lastResult ? lastResult.tier : "moderate";
+    renderTier(box, tier);
   }
 
   /* ---------- Start over ---------- */
@@ -394,4 +483,5 @@
   window.DrHangover.showScreen = showScreen;
   window.DrHangover.readForm = readForm;
   window.DrHangover.validateForm = validateForm;
+  window.DrHangover.renderTier = renderTier;
 })();
